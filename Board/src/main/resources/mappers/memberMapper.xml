@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="kr.co.mapper.member">
+
+  <insert id="insert">
+  	insert into sign (acc, id, pw, name, birth, email, adrs1, adrs2, phone)
+  			 values(#{acc},#{id},#{pw},#{name},#{birth},#{email},#{adrs1},#{adrs2},#{phone}) 
+  </insert>
+  
+  <select id="idcheck" resultType="kr.co.domain.MemberVO">
+  	select * from sign where id = #{id}
+  </select>
+  
+  <select id="list" resultType="kr.co.domain.MemberVO">
+  	select * from sign
+  </select>
+  
+  <select id="read" resultType="kr.co.domain.MemberVO">
+  	select * from sign where id = #{id}
+  </select>
+  
+  <select id="updateUI" resultType="kr.co.domain.MemberVO">
+  	select * from sign where id = #{id}
+  </select>
+  
+  <update id="update">
+  	update sign set acc=#{acc}, pw=#{pw}, name=#{name}, birth=#{birth}, email=#{email}, adrs1=#{adrs1}, adrs2=#{adrs2}, phone=#{phone} where id=#{id}
+  </update>
+  
+  <delete id="delete">
+  	delete from sign where id=#{id}
+  </delete>
+  
+  <select id="login" resultType="kr.co.domain.MemberVO">
+  	select * from sign where id= #{id}
+  </select>
+</mapper>
