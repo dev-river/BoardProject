@@ -31,7 +31,7 @@ public class BoardController {
 		System.out.println("reNum : "+reNum);
 		System.out.println("vo.getBno2 : "+vo.getBno());
 		
-		return "redirect:/board/listall";
+		return "redirect:/board/list";
 	}
 	
 	@RequestMapping(value = "/listall", method = RequestMethod.GET)
@@ -43,30 +43,29 @@ public class BoardController {
 	@RequestMapping(value = "/read", method = RequestMethod.GET)
 	public void read(Model model, int bno, PageTO to) {
 
-		PageTO dbTO = bService.list(to);
-		model.addAttribute("to", dbTO);
 		
 		BoardVO vo = bService.read(bno);
 		model.addAttribute("vo", vo);
+		model.addAttribute("to", to);
 	}
 	
 	@RequestMapping(value="/del", method = RequestMethod.POST)
-	public String delete(int bno) throws Exception{
+	public String delete(int bno, PageTO to) throws Exception{
 		bService.del(bno);
-		
-		return "redirect:/board/listall";
+		return "redirect:/board/list?curPage="+to.getCurPage()+"&perPage="+to.getPerPage();
 	}
 	
 	@RequestMapping(value="/modify", method = RequestMethod.GET)
-	public void modifyUI(Model model, int bno) {
+	public void modifyUI(Model model, PageTO to, int bno) {
 		BoardVO	vo = bService.modifyUI(bno);
 		model.addAttribute("vo", vo);
+		model.addAttribute("to", to);
 	}
 	
 	@RequestMapping(value="/modify", method = RequestMethod.POST)
-	public String modify(BoardVO vo) {
+	public String modify(BoardVO vo, PageTO to) {
 		bService.modify(vo);
-		return "redirect:/board/read?bno="+vo.getBno();
+		return "redirect:/board/read?bno="+vo.getBno()+"&curPage="+to.getCurPage()+"&perPage"+to.getPerPage();
 	}
 	
 	@RequestMapping("/list")

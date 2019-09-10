@@ -21,6 +21,9 @@
 			</div>
 			
 			<form>
+				<input type="hidden" name="curPage" value="${to.curPage}">
+				<input type="hidden" name="perPage" value="${to.perPage}">
+			
 				<div class="form-group">
 					<label for="bno">글번호</label>
 					<input id="bno" name="bno" value="${vo.bno}" readonly="readonly" class="form-control">
