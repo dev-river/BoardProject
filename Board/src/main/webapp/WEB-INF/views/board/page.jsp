@@ -3,17 +3,23 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 
+<div class="row text-center" style="text-align: center;">
+
+	<ul class="pagination">
+	
 	<c:if test="${to.curPage>1}">
-	<a href="list.do?curPage=${to.curPage-1}"> &laquo; </a>
+		<li><a href="list.do?curPage=${to.curPage-1}"> &laquo; </a></li>
 	</c:if>
 	
-	<c:forEach begin="${to.bpn}" end="${to.spn}" var="i">
-		<a href="list.do?curPage=${i}">
-			<c:if test="${i==to.curPage}"><font color="red" size="3em">${i}</font></c:if>
-			<c:if test="${i!=to.curPage}">${i}</c:if>
-		</a>&nbsp;
-	</c:forEach>
+		<c:forEach begin="${to.bpn}" end="${to.spn}" var="idx">
+			<li class="${to.curPage == idx?'active':''}"><a href="list.do?curPage=${idx}">${idx}</a></li>
+			<!-- li에 클래스를 active로 주면 현재 페이지에 색이 들어간다 -->
+		</c:forEach>
 
 	<c:if test="${to.curPage<to.totalPage}">
-	<a href="list.do?curPage=${to.curPage+1}"> &raquo; </a>
+		<li><a href="list.do?curPage=${to.curPage+1}"> &raquo; </a></li>
 	</c:if>
+	
+	</ul>
+
+</div>
