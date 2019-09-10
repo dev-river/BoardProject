@@ -25,7 +25,7 @@
 				<button class="btn btn-info"><a href="/board/create">글쓰기</a></button>
 			</div>
 			<div class="col-xs-push-9 col-xs-2">
-				<select class="form-control">
+				<select id="perPageSel" class="form-control">
 					<option disabled>페이지당 글 수</option>
 					<option ${to.perPage == 5?'selected':''}>5</option>
 					<option ${to.perPage == 10?'selected':''}>10</option>
@@ -75,18 +75,58 @@
 					</c:if>
 					
 				</ul>
-			</div>
-
-			<%-- <jsp:include page="page.jsp"/>  page.jsp 인클루드로 해보기 --%>
 				
+				<%-- <jsp:include page="page.jsp"/>  page.jsp 인클루드로 해보기 --%>
+				
+			</div>
+			
+			<div class="row">
+				<div class="input-group">
+					<span class="input-group-addon">
+						<select id="searchSel">
+							<option disabled>검색 기준</option>
+							<option value="writer">작성자</option>
+								<!-- value : 서버로 넘어가는거, 작성자 : JSP에 보이는거 -->
+							<option value="title">제목</option>
+							<option value="content">내용</option>
+						</select>
+					</span>
+					
+					<input class="form-control" id="keyword">
+					
+					<span class="input-group-btn">
+						<button id="searchBtn" class="btn btn-info">검색</button>
+					</span>
+				</div>
+			</div>
+			
 		</div>
 	</div>
 
 	<script type="text/javascript">
 		$(document).ready(function(){
-			$("select").change(function(){
-				var perPage = $("select option:selected").val();
-				location.assign("/board/list?curPage=${to.curPage}&perPage="+perPage);
+			$("#perPageSel").change(function(){
+				var perPage = $("#perPageSel option:selected").val();
+				
+				$.ajax({
+					type: 'get',
+					url: '/board/amount/'+perPage,
+					dataType: 'text',
+					success: function(totalPage){
+						if(${to.curPage}>totalPage){
+							location.assign("/board/list?curPage="+totalPage+"&perPage="+perPage);
+						}else{
+							location.assign("/board/list?curPage=${to.curPage}&perPage="+perPage);
+						}
+					}
+				});
+			});
+			
+			$("#searchBtn").on("click", function(){
+				var searchType = $("#searchSel option:selected").val();
+				var keyword = $("#keyword").val();
+				var url = "/sboard/list?searchType="+searchType+"&keyword="+keyword;
+				location.assign(url);
 			});
 		});
 	</script>

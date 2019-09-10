@@ -5,8 +5,10 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import kr.co.domain.BoardVO;
 import kr.co.domain.PageTO;
@@ -72,5 +74,12 @@ public class BoardController {
 	public void list(PageTO to, Model model) {
 		PageTO dbTO = bService.list(to);
 		model.addAttribute("to", dbTO);
+	}
+	
+	@RequestMapping("/amount/{perPage}")
+	@ResponseBody //ajax니까
+	public int list(@PathVariable("perPage") int perPage) {
+		int amount = bService.amount();
+		return (amount-1)/perPage+1;
 	}
 }

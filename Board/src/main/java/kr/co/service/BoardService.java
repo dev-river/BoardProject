@@ -20,5 +20,7 @@ public interface BoardService {
 	public void modify(BoardVO vo);
 
 	public PageTO list(PageTO to);
+
+	public int amount();
 	
 }
