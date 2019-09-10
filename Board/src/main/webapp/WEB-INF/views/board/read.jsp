@@ -20,6 +20,8 @@
 			
 			<form action=""> <!-- 정보값 넘기기위해서 -->
 				<input type="hidden" name="bno" value="${vo.bno}">
+				<input type="hidden" name="curPage" value="${to.curPage}">
+				<input type="hidden" name="perPage" value="${to.perPage}">
 			</form>
 			
 			<div class="form-group">
@@ -40,7 +42,7 @@
 			</div>	
 			<div class="form-group">
 				<label for="content">내용</label>
-				<textarea class="form-control" id="content" row="3" readonly = "readonly">${vo.content}</textarea>
+				<textarea class="form-control" id="content" rows="3" readonly = "readonly">${vo.content}</textarea>
 			</div>
 			
 			<div class="form-group">

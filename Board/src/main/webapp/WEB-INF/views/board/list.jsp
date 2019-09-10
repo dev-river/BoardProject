@@ -15,8 +15,26 @@
 <body>
 	<div class="container">
 		<div class="row">
-			<h1>게시글 목록</h1>
-			<a href="/board/create">글쓰기</a>
+			<div class="jumbotron">
+				<h1>게시글 목록</h1>
+			</div>
+		</div>
+	
+		<div class="row" style="margin-bottom: 15px;">
+			<div class="col-xs-1">
+				<button class="btn btn-info"><a href="/board/create">글쓰기</a></button>
+			</div>
+			<div class="col-xs-push-9 col-xs-2">
+				<select class="form-control">
+					<option disabled>페이지당 글 수</option>
+					<option ${to.perPage == 5?'selected':''}>5</option>
+					<option ${to.perPage == 10?'selected':''}>10</option>
+					<option ${to.perPage == 20?'selected':''}>20</option>
+				</select>
+			</div>
+		</div>
+		
+		<div class="row">
 			<table class="table table-hover">
 				<thead>
 					<tr>
@@ -31,7 +49,7 @@
 					<c:forEach items="${to.list}" var="vo">
 						<tr>
 							<td>${vo.bno}</td>
-							<td><a href="/board/read?bno=${vo.bno}">${vo.title}</a></td>
+							<td><a href="/board/read?bno=${vo.bno}&curPage=${to.curPage}&perPage=${to.perPage}">${vo.title}</a></td>
 							<td>${vo.writer}</td>
 							<td>${vo.updatedate}</td> <!-- 최종수정일 -->
 							<td>${vo.viewcnt}</td>
@@ -59,10 +77,18 @@
 				</ul>
 			</div>
 
-				<jsp:include page="page.jsp"/> <!-- page.jsp 인클루드로 해보기 -->
+			<%-- <jsp:include page="page.jsp"/>  page.jsp 인클루드로 해보기 --%>
 				
 		</div>
 	</div>
 
+	<script type="text/javascript">
+		$(document).ready(function(){
+			$("select").change(function(){
+				var perPage = $("select option:selected").val();
+				location.assign("/board/list?curPage=${to.curPage}&perPage="+perPage);
+			});
+		});
+	</script>
 </body>
 </html>
