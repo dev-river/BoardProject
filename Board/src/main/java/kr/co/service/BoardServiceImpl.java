@@ -63,4 +63,10 @@ public class BoardServiceImpl implements BoardService{
 		return to;
 	}
 
+	@Override
+	public int amount() {
+
+		return bDao.getAmount();
+	}
+
 }
