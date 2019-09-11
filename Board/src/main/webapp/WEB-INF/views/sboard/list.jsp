@@ -16,7 +16,7 @@
 	<div class="container">
 		<div class="row">
 			<div class="jumbotron">
-				<h1>게시글 목록</h1>
+				<h1>검색 목록</h1>
 			</div>
 		</div>
 	
@@ -49,7 +49,7 @@
 					<c:forEach items="${to.list}" var="vo">
 						<tr>
 							<td>${vo.bno}</td>
-							<td><a href="/board/read?bno=${vo.bno}&curPage=${to.curPage}&perPage=${to.perPage}">${vo.title}</a></td>
+							<td><a href="/sboard/read?bno=${vo.bno}&curPage=${to.curPage}&perPage=${to.perPage}&searchType=${to.searchType}&keyword=${to.keyword}">${vo.title}</a></td>
 							<td>${vo.writer}</td>
 							<td>${vo.updatedate}</td> <!-- 최종수정일 -->
 							<td>${vo.viewcnt}</td>
@@ -62,16 +62,15 @@
 				<ul class="pagination"> <!-- ul에 pagination 클래스를 주면 예쁘다 -->
 				
 					<c:if test="${to.curPage>1}">
-						<li><a href="list?curPage=${to.curPage-1}&perPage=${to.perPage}">&laquo;</a></li>
-					</c:if> <!-- 주소창에서 perPage값을 조절하면서 확인할것 -->
+						<li><a href="/sboard/list?searchType=${to.searchType}&keyword=${to.keyword}&curPage=${to.curPage-1}&perPage=${to.perPage}">&laquo;</a></li>
+					</c:if>
 					
 					<c:forEach begin="${to.bpn}" end="${to.spn}" var="idx">
-						<li class="${to.curPage == idx?'active':''}"><a href="/board/list?curPage=${idx}&perPage=${to.perPage}">${idx}</a></li>
-						<!-- li에 클래스를 active로 주면 현재 페이지에 색이 들어간다 -->
+						<li class="${to.curPage == idx?'active':''}"><a href="/sboard/list?searchType=${to.searchType}&keyword=${to.keyword}&curPage=${idx}&perPage=${to.perPage}">${idx}</a></li>
 					</c:forEach>
 					
 					<c:if test="${to.curPage<to.totalPage}">
-						<li><a href="list?curPage=${to.curPage+1}&perPage=${to.perPage}">&raquo;</a></li>
+						<li><a href="/sboard/list?searchType=${to.searchType}&keyword=${to.keyword}&curPage=${to.curPage+1}&perPage=${to.perPage}">&raquo;</a></li>
 					</c:if>
 					
 				</ul>
@@ -79,26 +78,8 @@
 				<%-- <jsp:include page="page.jsp"/>  page.jsp 인클루드로 해보기 --%>
 				
 			</div>
-			
-			<div class="row">
-				<div class="input-group">
-					<span class="input-group-addon">
-						<select id="searchSel">
-							<option disabled>검색 기준</option>
-							<option value="writer">작성자</option>
-								<!-- value : 서버로 넘어가는거, 작성자 : JSP에 보이는거 -->
-							<option value="title">제목</option>
-							<option value="content">내용</option>
-						</select>
-					</span>
-					
-					<input class="form-control" id="keyword">
-					
-					<span class="input-group-btn">
-						<button id="searchBtn" class="btn btn-info">검색</button>
-					</span>
-				</div>
-			</div>
+
+			<!-- 기존 검색창 삭제 -->
 			
 		</div>
 	</div>
@@ -110,23 +91,21 @@
 				
 				$.ajax({
 					type: 'get',
-					url: '/board/amount/'+perPage,
+					url: '/sboard/amount/'+perPage,
+					data:{
+						'searchType' : '${to.searchType}',
+						'keyword' : '${to.keyword}'
+					},
 					dataType: 'text',
 					success: function(totalPage){
-						if(${to.curPage}>totalPage){
-							location.assign("/board/list?curPage="+totalPage+"&perPage="+perPage);
+						var curPage=${to.curPage};
+						if(curPage>totalPage){
+							location.assign("/sboard/list?curPage="+totalPage+"&perPage="+perPage+"&searchType=${to.searchType}&keyword=${to.keyword}");
 						}else{
-							location.assign("/board/list?curPage=${to.curPage}&perPage="+perPage);
+							location.assign("/sboard/list?curPage=${to.curPage}&perPage="+perPage+"&searchType=${to.searchType}&keyword=${to.keyword}");
 						}
 					}
 				});
-			});
-			
-			$("#searchBtn").on("click", function(){
-				var searchType = $("#searchSel option:selected").val();
-				var keyword = $("#keyword").val();
-				var url = "/sboard/list?searchType="+searchType+"&keyword="+keyword;
-				window.open(url);
 			});
 		});
 	</script>

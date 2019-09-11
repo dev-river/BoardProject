@@ -4,6 +4,7 @@ import java.util.List;
 
 import kr.co.domain.BoardVO;
 import kr.co.domain.PageTO;
+import kr.co.domain.SPageTO;
 
 public interface BoardDAO {
 
@@ -24,5 +25,6 @@ public interface BoardDAO {
 	public int getAmount();
 
 	public List<BoardVO> list(PageTO to);
+
 	
 }
