@@ -48,29 +48,4 @@
 		]]>
 	</select>
 	
-	<sql id="search">
-		<if test="searchType == 'writer'.toString()">
-			where lower(writer) like '%'||lower(#{keyword})||'%'
-		</if>
-		<if test="searchType == 'title'.toString()">
-			where lower(title) like '%'||lower(#{keyword})||'%'
-		</if>
-		<if test="searchType == 'content'.toString()">
-			where lower(content) like '%'||lower(#{keyword})||'%'
-		</if>
-	</sql>
-	
-	<select id="searchList" resultType="kr.co.domain.BoardVO"> <!-- search List의 페이징처리 -->
-		<![CDATA[
-		select * from 
-		(select rownum rnum, bno, title, writer, updatedate, viewcnt from 
-		(select * from tbl_board]]><include refid="search"></include> <!-- 위에 작성한 search sql문(where절)이 들어감 -->
-		<![CDATA[order by bno desc)) where rnum between #{startNum} and #{endNum}
-		]]>
-	</select>
-	
-	<select id="searchAmount" resultType="Integer"> <!-- search List의 amount 가져오기 -->
-		<![CDATA[select count(bno) from tbl_board]]> <include refid="search"></include>
-	</select>
-	
 </mapper>

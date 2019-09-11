@@ -26,8 +26,5 @@ public interface BoardDAO {
 
 	public List<BoardVO> list(PageTO to);
 
-	public int searchAmount();
-
-	public List<BoardVO> searchList(SPageTO sto);
 	
 }

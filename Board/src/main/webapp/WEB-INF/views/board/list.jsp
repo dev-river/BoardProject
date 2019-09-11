@@ -126,7 +126,7 @@
 				var searchType = $("#searchSel option:selected").val();
 				var keyword = $("#keyword").val();
 				var url = "/sboard/list?searchType="+searchType+"&keyword="+keyword;
-				location.assign(url);
+				window.open(url);
 			});
 		});
 	</script>

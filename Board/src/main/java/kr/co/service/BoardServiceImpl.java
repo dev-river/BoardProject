@@ -70,21 +70,5 @@ public class BoardServiceImpl implements BoardService{
 		return bDao.getAmount();
 	}
 
-	@Override
-	public SPageTO searchList(SPageTO sto) {
-		int amount = bDao.searchAmount();
-		sto.setAmount(amount);
-		
-		List<BoardVO> list = bDao.searchList(sto);
-		sto.setList(list);
-				
-		return sto;
-	}
-
-	@Override
-	public int searchAmount() {
-
-		return bDao.searchAmount();
-	}
 
 }

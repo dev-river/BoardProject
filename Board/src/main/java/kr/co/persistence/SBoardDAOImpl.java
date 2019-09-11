@@ -11,23 +11,26 @@ import kr.co.domain.PageTO;
 import kr.co.domain.SPageTO;
 
 @Repository
-public class BoardDAOImpl implements BoardDAO{
+public class SBoardDAOImpl implements SBoardDAO{
 	
 	@Autowired
 	private SqlSession session;
 	
-	private final String NS = "kr.co.mapper.board";
+	private final String NS = "kr.co.mapper.sboard";
 
 	@Override
-	public Integer create(BoardVO vo) throws Exception {
-
-		return session.insert(NS+".create", vo);
+	public List<BoardVO> list(SPageTO sto) {
+		
+		System.out.println(sto.getSearchType());
+		System.out.println(sto.getKeyword());
+		
+		return session.selectList(NS+".list", sto);
 	}
 
 	@Override
-	public List<BoardVO> listall() {
+	public int amount(SPageTO sto) {
 
-		return session.selectList(NS+".listall");
+		return session.selectOne(NS+".amount", sto);
 	}
 
 	@Override
@@ -38,38 +41,27 @@ public class BoardDAOImpl implements BoardDAO{
 
 	@Override
 	public void increaseviewcnt(int bno) {
+
 		session.update(NS+".increaseviewcnt", bno);
 	}
 
 	@Override
 	public void del(int bno) {
-
+		
 		session.delete(NS+".del", bno);
 	}
 
 	@Override
 	public BoardVO modifyUI(int bno) {
 
-		return session.selectOne(NS+".modifyUI", bno);	
+		return session.selectOne(NS+".modifyUI", bno);
 	}
 
 	@Override
 	public void modify(BoardVO vo) {
-
+		
 		session.update(NS+".modify", vo);
 	}
 
-	@Override
-	public int getAmount() {
-		
-		return session.selectOne(NS+".getAmount");
-	}
-
-	@Override
-	public List<BoardVO> list(PageTO to) {
-
-		return session.selectList(NS+".list", to);
-	}
-
-
+	
 }

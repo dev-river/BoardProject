@@ -23,9 +23,5 @@ public interface BoardService {
 	public PageTO list(PageTO to);
 
 	public int amount();
-
-	public SPageTO searchList(SPageTO sto);
-
-	public int searchAmount();
 	
 }
