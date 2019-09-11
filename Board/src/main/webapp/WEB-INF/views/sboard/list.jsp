@@ -49,7 +49,7 @@
 					<c:forEach items="${to.list}" var="vo">
 						<tr>
 							<td>${vo.bno}</td>
-							<td><a href="/board/read?bno=${vo.bno}&curPage=${to.curPage}&perPage=${to.perPage}">${vo.title}</a></td>
+							<td><a href="/sboard/read?bno=${vo.bno}&curPage=${to.curPage}&perPage=${to.perPage}&searchType=${to.searchType}&keyword=${to.keyword}">${vo.title}</a></td>
 							<td>${vo.writer}</td>
 							<td>${vo.updatedate}</td> <!-- 최종수정일 -->
 							<td>${vo.viewcnt}</td>
@@ -62,16 +62,16 @@
 				<ul class="pagination"> <!-- ul에 pagination 클래스를 주면 예쁘다 -->
 				
 					<c:if test="${to.curPage>1}">
-						<li><a href="list?curPage=${to.curPage-1}&perPage=${to.perPage}">&laquo;</a></li>
+						<li><a href="/sboard/list?searchType=${to.searchType}&keyword=${to.keyword}&curPage=${to.curPage-1}&perPage=${to.perPage}">&laquo;</a></li>
 					</c:if> <!-- 주소창에서 perPage값을 조절하면서 확인할것 -->
 					
 					<c:forEach begin="${to.bpn}" end="${to.spn}" var="idx">
-						<li class="${to.curPage == idx?'active':''}"><a href="/board/list?curPage=${idx}&perPage=${to.perPage}">${idx}</a></li>
+						<li class="${to.curPage == idx?'active':''}"><a href="/sboard/list?searchType=${to.searchType}&keyword=${to.keyword}&curPage=${idx}&perPage=${to.perPage}">${idx}</a></li>
 						<!-- li에 클래스를 active로 주면 현재 페이지에 색이 들어간다 -->
 					</c:forEach>
 					
 					<c:if test="${to.curPage<to.totalPage}">
-						<li><a href="list?curPage=${to.curPage+1}&perPage=${to.perPage}">&raquo;</a></li>
+						<li><a href="/sboard/list?searchType=${to.searchType}&keyword=${to.keyword}&curPage=${to.curPage+1}&perPage=${to.perPage}">&raquo;</a></li>
 					</c:if>
 					
 				</ul>
@@ -110,13 +110,13 @@
 				
 				$.ajax({
 					type: 'get',
-					url: '/board/amount/'+perPage,
+					url: '/sboard/amount/'+perPage,
 					dataType: 'text',
 					success: function(totalPage){
 						if(${to.curPage}>totalPage){
-							location.assign("/board/list?curPage="+totalPage+"&perPage="+perPage);
+							location.assign("/sboard/list?searchType=${to.searchType}&keyword=${to.keyword}&curPage="+totalPage+"&perPage="+perPage);
 						}else{
-							location.assign("/board/list?curPage=${to.curPage}&perPage="+perPage);
+							location.assign("/sboard/list?searchType=${to.searchType}&keyword=${to.keyword}&curPage=${to.curPage}&perPage="+perPage);
 						}
 					}
 				});

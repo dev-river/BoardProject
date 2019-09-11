@@ -8,6 +8,7 @@ import org.springframework.stereotype.Repository;
 
 import kr.co.domain.BoardVO;
 import kr.co.domain.PageTO;
+import kr.co.domain.SPageTO;
 
 @Repository
 public class BoardDAOImpl implements BoardDAO{
@@ -68,6 +69,18 @@ public class BoardDAOImpl implements BoardDAO{
 	public List<BoardVO> list(PageTO to) {
 
 		return session.selectList(NS+".list", to);
+	}
+
+	@Override
+	public int searchAmount() {
+
+		return session.selectOne(NS+".searchAmount");
+	}
+
+	@Override
+	public List<BoardVO> searchList(SPageTO sto) {
+
+		return session.selectList(NS+".searchList", sto);
 	}
 
 }

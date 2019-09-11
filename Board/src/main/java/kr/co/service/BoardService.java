@@ -4,6 +4,7 @@ import java.util.List;
 
 import kr.co.domain.BoardVO;
 import kr.co.domain.PageTO;
+import kr.co.domain.SPageTO;
 
 public interface BoardService {
 
@@ -22,5 +23,9 @@ public interface BoardService {
 	public PageTO list(PageTO to);
 
 	public int amount();
+
+	public SPageTO searchList(SPageTO sto);
+
+	public int searchAmount();
 	
 }
