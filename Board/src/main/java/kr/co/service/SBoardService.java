@@ -5,9 +5,9 @@ import kr.co.domain.SPageTO;
 
 public interface SBoardService {
 
-	SPageTO list(SPageTO sto);
+	SPageTO<BoardVO> list(SPageTO<BoardVO> sto);
 
-	int amount(SPageTO sto);
+	int amount(SPageTO<BoardVO> sto);
 
 	BoardVO read(int bno);
 

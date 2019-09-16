@@ -22,29 +22,29 @@ public class SearchBoardController {
 	private SBoardService sbService;
 	
 	@RequestMapping("/list")
-	public void list(SPageTO sto, Model model) {
-		SPageTO dbsto = sbService.list(sto);
+	public void list(SPageTO<BoardVO> sto, Model model) {
+		SPageTO<BoardVO> dbsto = sbService.list(sto);
 		model.addAttribute("to", dbsto); //"to"를 써야 기존에 만들어뒀던걸 활용하기 쉬움
 	}
 	 
 	
 	@RequestMapping("/amount/{perPage}")
 	@ResponseBody //ajax니까
-	public int list(@PathVariable("perPage") int perPage, SPageTO sto){ 
+	public int list(@PathVariable("perPage") int perPage, SPageTO<BoardVO> sto){ 
 		int amount = sbService.amount(sto);
 		int totalPage = (amount-1)/perPage+1; 
 		return totalPage;
 	}
 	  
 	@RequestMapping(value = "/read", method = RequestMethod.GET) 
-	public void	read(Model model, int bno, SPageTO sto) {
+	public void	read(Model model, int bno, SPageTO<BoardVO> sto) {
 	  BoardVO svo = sbService.read(bno);
 	  model.addAttribute("vo", svo);
 	  model.addAttribute("to", sto);
 	}
 	  
 	@RequestMapping(value="/del", method = RequestMethod.POST) 
-	public String delete(int bno, SPageTO sto) throws Exception{ 
+	public String delete(int bno, SPageTO<BoardVO> sto) throws Exception{ 
 		sbService.del(bno);
 		
 		StringBuffer sb = new StringBuffer();
@@ -63,14 +63,14 @@ public class SearchBoardController {
 	}
 	  
 	@RequestMapping(value="/modify", method = RequestMethod.GET) 
-	public void	modifyUI(Model model, SPageTO sto, int bno) {
+	public void	modifyUI(Model model, SPageTO<BoardVO> sto, int bno) {
 		BoardVO vo = sbService.modifyUI(bno); 
 		model.addAttribute("vo", vo);
 		model.addAttribute("to", sto); 
 	}
 	  
 	@RequestMapping(value="/modify", method = RequestMethod.POST)
-	public String modify(BoardVO vo, SPageTO sto) { 
+	public String modify(BoardVO vo, SPageTO<BoardVO> sto) { 
 		sbService.modify(vo);
 		
 		StringBuffer sb = new StringBuffer();

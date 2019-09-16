@@ -7,7 +7,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import kr.co.domain.BoardVO;
-import kr.co.domain.PageTO;
 import kr.co.domain.SPageTO;
 
 @Repository
@@ -19,7 +18,7 @@ public class SBoardDAOImpl implements SBoardDAO{
 	private final String NS = "kr.co.mapper.sboard";
 
 	@Override
-	public List<BoardVO> list(SPageTO sto) {
+	public List<BoardVO> list(SPageTO<BoardVO> sto) {
 		
 		System.out.println(sto.getSearchType());
 		System.out.println(sto.getKeyword());
@@ -28,7 +27,7 @@ public class SBoardDAOImpl implements SBoardDAO{
 	}
 
 	@Override
-	public int amount(SPageTO sto) {
+	public int amount(SPageTO<BoardVO> sto) {
 
 		return session.selectOne(NS+".amount", sto);
 	}

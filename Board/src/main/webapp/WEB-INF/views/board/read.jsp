@@ -46,17 +46,75 @@
 			</div>
 			
 			<div class="form-group">
+				<button id="reply_form" class="btn btn-primary">댓글</button>&nbsp;&nbsp;
 				<button class="btn btn-warning modify">수정</button>&nbsp;&nbsp;
 				<button class="btn btn-danger del">삭제</button>&nbsp;&nbsp;
 				<button class="btn btn-info list">목록</button>
 			</div>
 			
 		</div>
+		<hr>
+		<div class="row">
+			<div id="myCollapsible" class="collapse">
+				<div class="form-group">
+					<label for="replyer">작성자</label>
+					<input id="replyer" class="form-control">
+				</div>
+				<div class="form-group">
+					<label for="replytext">내용</label>
+					<input id="replytext" class="form-control">
+				</div>
+				<div class="form-group">
+					<button id="replyInsertBtn" class="btn btn-default">댓글 등록</button>
+					<button id="replyResetBtn" class="btn btn-default">초기화</button>
+				</div>
+			</div>
+		</div>
 	</div>
 
 	<script type="text/javascript">
-	
+
+		var bno = ${vo.bno}; /* 계속 사용될것이므로 전역변수로 지정 */
+		
 		$(document).ready(function(){
+			
+			$("#reply_form").click(function(){
+				$("#myCollapsible").collapse("toggle");
+			});
+			
+			$("#replyResetBtn").click(function(){
+				$("#replyer").val("");
+				$("#replytext").val("");
+			});
+			
+			$("#replyInsertBtn").click(function(){
+				
+				var replyer = $("#replyer").val();
+				var replytext = $("#replytext").val();
+				
+				$.ajax({
+					type : 'post',
+					headers : {
+						'Content-Type' : 'application/json',
+						'X-HTTP-Method-Override' : 'POST',
+					},
+					url : '/replies',
+					data : JSON.stringify({
+						bno : bno,
+						replyer : replyer,
+						replytext : replytext
+					}),
+					dataType : 'text',
+					success : function(result){
+						alert(result);
+						if(result == 'INSERT_SUCCESS'){
+							$("#replyer").val("");
+							$("#replytext").val("");
+						}
+					}
+				});
+			});
+			
 			var $form = $("form");
 
 			$(".modify").click(function(){

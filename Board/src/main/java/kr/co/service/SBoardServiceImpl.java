@@ -19,7 +19,7 @@ public class SBoardServiceImpl implements SBoardService{
 	
 	
 	@Override
-	public SPageTO list(SPageTO sto) {
+	public SPageTO<BoardVO> list(SPageTO<BoardVO> sto) {
 		
 		int amount = sbDao.amount(sto);
 		sto.setAmount(amount);
@@ -34,7 +34,7 @@ public class SBoardServiceImpl implements SBoardService{
 	}
 
 	@Override
-	public int amount(SPageTO sto) {
+	public int amount(SPageTO<BoardVO> sto) {
 
 		return sbDao.amount(sto);
 	}

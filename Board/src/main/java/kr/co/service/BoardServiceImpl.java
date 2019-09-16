@@ -8,7 +8,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import kr.co.domain.BoardVO;
 import kr.co.domain.PageTO;
-import kr.co.domain.SPageTO;
 import kr.co.persistence.BoardDAO;
 
 @Service
@@ -54,7 +53,7 @@ public class BoardServiceImpl implements BoardService{
 	}
 
 	@Override
-	public PageTO list(PageTO to) {
+	public PageTO<BoardVO> list(PageTO<BoardVO> to) {
 		int amount = bDao.getAmount();
 		to.setAmount(amount);
 		

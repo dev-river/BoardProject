@@ -7,9 +7,9 @@ import kr.co.domain.SPageTO;
 
 public interface SBoardDAO {
 
-	int amount(SPageTO sto);
+	int amount(SPageTO<BoardVO> sto);
 
-	List<BoardVO> list(SPageTO sto);
+	List<BoardVO> list(SPageTO<BoardVO> sto);
 
 	BoardVO read(int bno);
 

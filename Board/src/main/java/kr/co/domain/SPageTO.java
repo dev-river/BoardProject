@@ -1,6 +1,6 @@
 package kr.co.domain;
 
-public class SPageTO extends PageTO{
+public class SPageTO<T> extends PageTO<T>{
 	
 	private String searchType;
 	private String keyword;
