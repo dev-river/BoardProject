@@ -40,7 +40,7 @@ public class MemberVO implements Serializable{
 		this.signDate = signDate;
 		this.checkSN = checkSN;
 	}
-
+	
 	public int getAcc() {
 		return acc;
 	}
