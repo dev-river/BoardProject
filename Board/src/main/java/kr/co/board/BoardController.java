@@ -43,7 +43,7 @@ public class BoardController {
 	}
 	
 	@RequestMapping(value = "/read", method = RequestMethod.GET)
-	public void read(Model model, int bno, PageTO to) {
+	public void read(Model model, int bno, PageTO<BoardVO> to) {
 
 		
 		BoardVO vo = bService.read(bno);
@@ -52,27 +52,27 @@ public class BoardController {
 	}
 	
 	@RequestMapping(value="/del", method = RequestMethod.POST)
-	public String delete(int bno, PageTO to) throws Exception{
+	public String delete(int bno, PageTO<BoardVO> to) throws Exception{
 		bService.del(bno);
 		return "redirect:/board/list?curPage="+to.getCurPage()+"&perPage="+to.getPerPage();
 	}
 	
 	@RequestMapping(value="/modify", method = RequestMethod.GET)
-	public void modifyUI(Model model, PageTO to, int bno) {
+	public void modifyUI(Model model, PageTO<BoardVO> to, int bno) {
 		BoardVO	vo = bService.modifyUI(bno);
 		model.addAttribute("vo", vo);
 		model.addAttribute("to", to);
 	}
 	
 	@RequestMapping(value="/modify", method = RequestMethod.POST)
-	public String modify(BoardVO vo, PageTO to) {
+	public String modify(BoardVO vo, PageTO<BoardVO> to) {
 		bService.modify(vo);
 		return "redirect:/board/read?bno="+vo.getBno()+"&curPage="+to.getCurPage()+"&perPage"+to.getPerPage();
 	}
 	
 	@RequestMapping("/list")
-	public void list(PageTO to, Model model) {
-		PageTO dbTO = bService.list(to);
+	public void list(PageTO<BoardVO> to, Model model) {
+		PageTO<BoardVO> dbTO = bService.list(to);
 		model.addAttribute("to", dbTO);
 	}
 	

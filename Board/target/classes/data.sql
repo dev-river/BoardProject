@@ -48,3 +48,20 @@ viewcnt number(5) default 0
 -- board 시퀀스 생성
 create sequence seq_board;
 
+--댓글테이블 생성
+create table tbl_reply(
+rno number primary key,
+bno number,
+replytext varchar2(3000) not null,
+replyer varchar2(30) not null,
+regidate date default sysdate,
+updatedate date default sysdate,
+constraint fk_reply foreign key(bno) references tbl_board(bno)
+);
+
+--reply 시퀀스 생성
+create sequence seq_reply;
+
+--select문
+select * from tbl_board
+select * from tbl_reply

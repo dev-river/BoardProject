@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="kr.co.mapper.reply">
+	
+	<insert id="insert">
+		insert into tbl_reply (rno, bno, replytext, replyer) values (seq_reply.nextval, #{bno}, #{replytext}, #{replyer})
+		<selectKey keyProperty="rno" resultType="Integer" order="AFTER"> <!-- 생성된 bno값을 바로 사용해야하는 경우 -->
+			select seq_reply.currval from dual
+		</selectKey>
+	</insert>
+
+	
+</mapper>

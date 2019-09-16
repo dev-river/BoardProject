@@ -4,7 +4,6 @@ import java.util.List;
 
 import kr.co.domain.BoardVO;
 import kr.co.domain.PageTO;
-import kr.co.domain.SPageTO;
 
 public interface BoardService {
 
@@ -20,7 +19,7 @@ public interface BoardService {
 
 	public void modify(BoardVO vo);
 
-	public PageTO list(PageTO to);
+	public PageTO<BoardVO> list(PageTO<BoardVO> to);
 
 	public int amount();
 	
