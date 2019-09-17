@@ -1,13 +1,15 @@
-package kr.co.persistence;
+package kr.co.service;
 
 import java.util.List;
 
 import kr.co.domain.PageTO;
 import kr.co.domain.ReplyVO;
 
-public interface ReplyDAO {
-
+public interface SReplyService {
+	
 	void insert(ReplyVO vo);
+
+	List<ReplyVO> list(int bno);
 
 	void update(ReplyVO vo);
 
@@ -15,7 +17,5 @@ public interface ReplyDAO {
 
 	void deleteAll(int bno);
 
-	int getAmount(int bno);
-
-	List<ReplyVO> list(int bno, PageTO<ReplyVO> to);
+	PageTO<ReplyVO> list(int bno, int replyPage);
 }

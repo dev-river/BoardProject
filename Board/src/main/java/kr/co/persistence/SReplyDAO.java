@@ -5,9 +5,11 @@ import java.util.List;
 import kr.co.domain.PageTO;
 import kr.co.domain.ReplyVO;
 
-public interface ReplyDAO {
-
+public interface SReplyDAO {
+	
 	void insert(ReplyVO vo);
+
+	List<ReplyVO> list(int bno);
 
 	void update(ReplyVO vo);
 

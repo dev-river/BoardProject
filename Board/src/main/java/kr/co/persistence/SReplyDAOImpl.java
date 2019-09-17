@@ -11,17 +11,23 @@ import kr.co.domain.PageTO;
 import kr.co.domain.ReplyVO;
 
 @Repository
-public class ReplyDAOImpl implements ReplyDAO{
+public class SReplyDAOImpl implements SReplyDAO{
 
 	@Autowired
 	private SqlSession session;
 	
-	private final String NS = "kr.co.mapper.reply";
+	private final String NS = "kr.co.mapper.sreply";
 	
 	@Override
 	public void insert(ReplyVO vo) {
-
+		
 		session.insert(NS+".insert", vo);
+	}
+
+	@Override
+	public List<ReplyVO> list(int bno) {
+
+		return session.selectList(NS+".list", bno);
 	}
 
 	@Override
