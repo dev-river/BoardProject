@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import kr.co.domain.BoardVO;
 import kr.co.domain.PageTO;
 import kr.co.service.BoardService;
+import kr.co.service.ReplyService;
 
 @Controller
 @RequestMapping("/board")
@@ -20,6 +21,9 @@ public class BoardController {
 	
 	@Autowired
 	private BoardService bService;
+	
+	@Autowired
+	private ReplyService rService;
 	
 	@RequestMapping(value = "/create", method = RequestMethod.GET)
 	public void createUI() {
@@ -53,6 +57,7 @@ public class BoardController {
 	
 	@RequestMapping(value="/del", method = RequestMethod.POST)
 	public String delete(int bno, PageTO<BoardVO> to) throws Exception{
+		rService.deleteAll(bno);
 		bService.del(bno);
 		return "redirect:/board/list?curPage="+to.getCurPage()+"&perPage="+to.getPerPage();
 	}

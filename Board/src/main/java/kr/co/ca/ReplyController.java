@@ -1,7 +1,5 @@
 package kr.co.ca;
 
-import java.util.List;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -11,6 +9,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
+import kr.co.domain.PageTO;
 import kr.co.domain.ReplyVO;
 import kr.co.service.ReplyService;
 
@@ -20,6 +19,21 @@ public class ReplyController {
 	
 	@Autowired
 	private ReplyService service;
+	
+	@RequestMapping(value="/{bno}/{replyPage}", method = RequestMethod.GET)
+	public ResponseEntity<PageTO<ReplyVO>> list(@PathVariable("bno") int bno, @PathVariable("replyPage") int replyPage){
+		
+		ResponseEntity<PageTO<ReplyVO>> entity = null;
+		
+		try {
+			PageTO<ReplyVO> to = service.list(bno, replyPage);
+			entity = new ResponseEntity<PageTO<ReplyVO>>(to, HttpStatus.OK);
+		} catch (Exception e) {
+			e.printStackTrace();
+			entity = new ResponseEntity<PageTO<ReplyVO>>(HttpStatus.BAD_REQUEST);
+		}
+		return entity;
+	}
 	
 	@RequestMapping(value="/{rno}", method = RequestMethod.DELETE)
 	public ResponseEntity<String> delete(@PathVariable("rno") int rno){
@@ -51,21 +65,6 @@ public class ReplyController {
 			entity = new ResponseEntity<String>(e.getMessage(), HttpStatus.BAD_REQUEST);
 		}
 		
-		return entity;
-	}
-	
-	@RequestMapping(value="/{bno}", method = RequestMethod.GET)
-	public ResponseEntity<List<ReplyVO>> list(@PathVariable("bno") int bno){
-		
-		ResponseEntity<List<ReplyVO>> entity = null;
-		
-		try {
-			List<ReplyVO> list = service.list(bno);
-			entity = new ResponseEntity<List<ReplyVO>>(list, HttpStatus.OK);
-		} catch (Exception e) {
-			e.printStackTrace();
-			entity = new ResponseEntity<List<ReplyVO>>(HttpStatus.BAD_REQUEST);
-		}
 		return entity;
 	}
 	

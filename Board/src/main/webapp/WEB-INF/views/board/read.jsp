@@ -72,8 +72,13 @@
 		</div>
 		
 		<div id="replies" class="row">
-			<hr>
+			<!-- 댓글들어갈곳 -->
+		</div>
+		
+		<div class="row"> <!-- 댓글 페이징 들어갈곳 -->
+			<ul class="pagination">
 			
+			</ul>
 		</div>
 		
 		<div class="row">
@@ -99,8 +104,15 @@
 	<script type="text/javascript">
 
 		var bno = ${vo.bno}; /* 계속 사용될것이므로 전역변수로 지정 */
+		var replyPage = 1; /* 항상 첫페이지는 1 */
 		
 		$(document).ready(function(){
+			
+			$(".pagination").on("click", "li a", function(event){
+				event.preventDefault();
+				replyPage = $(this).attr("href");
+				getAllList(bno,replyPage);
+			});
 			
 			$("#modal_delete").click(function(){
 				var rno = $("#modal_rno").text();
@@ -115,7 +127,7 @@
 					dataType : 'text',
 					success : function(result){
 						alert(result);
-						getAllList(bno);
+						getAllList(bno, replyPage);
 					}
 				});
 			});
@@ -137,7 +149,7 @@
 					dataType : 'text',
 					success : function(result){
 						alert(result);
-						getAllList(bno);
+						getAllList(bno, replyPage);
 					}
 				});
 			});
@@ -186,7 +198,7 @@
 						if(result == 'INSERT_SUCCESS'){
 							$("#replyer").val("");
 							$("#replytext").val("");
-							getAllList(bno);
+							getAllList(bno, replyPage);
 						}
 					}
 				});
@@ -212,22 +224,23 @@
 				$form.submit();
 			});
 			
-			getAllList(bno);
+			getAllList(bno, replyPage);
 			
 		});
 		
-		function getAllList(bno) {
-			$.getJSON("/replies/"+bno, function(arr){
+		function getAllList(bno, replyPage) {
+			$.getJSON("/replies/"+bno+"/"+replyPage, function(result){
 				/* console.log(result); 관리자모드 - console로 확인하기*/
 				var str = '<hr>';
+				var arr = result.list;
 				
 				for(var i=0;i<arr.length;i++){ 
 					/*
 					div부분을 문자열로 인식해야하기 때문에 줄마다 ''로 감싸주고 +로 연결해야한다
 					데이터 부분은 배열값으로 되어있기 때문에 arr[i].rno 의 형태로 적용시켜줘야한다
 					data-rno를 이용해 rno값을 p에 고정
-					button class에 callModal이라는 클래스 추가 (나중에 Modal을 사용하기 위해)
-					*/
+					button class에 callModal이라는 클래스 추가 (나중에 Modal을 사용하기 위해)*/
+					
 					str += '<div class="panel panel-info">'+
 				'<div class="panel-heading">'+
 					'<span>rno:'+arr[i].rno+', 작성자: <span class="glyphicon glyphicon-user"></span>'+arr[i].replyer+'</span>'+
@@ -241,9 +254,28 @@
 				}
 				
 				$("#replies").html(str);
+				
+				printPaging(result);
 			});
 		}
 		
+		function printPaging(to){
+			var str = '';
+			if(to.curPage > 1){
+				str+="<li><a href='"+(to.curPage-1)+"'>&laquo;</a></li>"
+			}
+			
+			for(var i=to.bpn;i<to.spn+1;i++){
+				var strClass = to.curPage == i ? 'active':'';
+				str+="<li class='"+strClass+"'><a href='"+i+"'>"+i+"</a></li>";
+			}
+			
+			if(to.curPage < to.totalPage){
+				str+="<li><a href='"+(to.curPage+1)+"'>&raquo;</a></li>"
+			}
+			
+			$(".pagination").html(str);
+		}
 	</script>
 </body>
 </html>

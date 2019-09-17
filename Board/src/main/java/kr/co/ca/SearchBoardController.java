@@ -13,6 +13,7 @@ import kr.co.domain.PageTO;
 import kr.co.domain.SPageTO;
 import kr.co.service.BoardService;
 import kr.co.service.SBoardService;
+import kr.co.service.SReplyService;
 
 @Controller
 @RequestMapping("/sboard")
@@ -20,6 +21,9 @@ public class SearchBoardController {
 
 	@Autowired
 	private SBoardService sbService;
+	
+	@Autowired
+	private SReplyService srService;
 	
 	@RequestMapping("/list")
 	public void list(SPageTO<BoardVO> sto, Model model) {
@@ -44,7 +48,8 @@ public class SearchBoardController {
 	}
 	  
 	@RequestMapping(value="/del", method = RequestMethod.POST) 
-	public String delete(int bno, SPageTO<BoardVO> sto) throws Exception{ 
+	public String delete(int bno, SPageTO<BoardVO> sto) throws Exception{
+		srService.deleteAll(bno);
 		sbService.del(bno);
 		
 		StringBuffer sb = new StringBuffer();

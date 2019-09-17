@@ -7,6 +7,7 @@ import javax.inject.Inject;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import kr.co.domain.PageTO;
 import kr.co.domain.ReplyVO;
 import kr.co.persistence.ReplyDAO;
 
@@ -23,12 +24,6 @@ public class ReplyServiceImpl implements ReplyService{
 	}
 
 	@Override
-	public List<ReplyVO> list(int bno) {
-
-		return dao.list(bno);
-	}
-
-	@Override
 	public void update(ReplyVO vo) {
 
 		dao.update(vo);
@@ -38,6 +33,24 @@ public class ReplyServiceImpl implements ReplyService{
 	public void delete(int rno) {
 
 		dao.delete(rno);
+	}
+
+	@Override
+	public void deleteAll(int bno) {
+
+		dao.deleteAll(bno);
+	}
+
+	@Override
+	public PageTO<ReplyVO> list(int bno, int replyPage) {
+		int amount = dao.getAmount(bno);
+		PageTO<ReplyVO> to = new PageTO<ReplyVO>(replyPage);
+		to.setAmount(amount);
+		to.setPerPage(5);
+		List<ReplyVO> list = dao.list(bno, to);
+		to.setList(list);
+		
+		return to;
 	}
 
 }
