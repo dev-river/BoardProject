@@ -108,7 +108,7 @@
 						replytext : replytext
 					}),
 					dataType : 'text',
-					seccess : function(result){
+					success : function(result){
 						alert(result);
 						if(result == 'INSERT_SUCCESS'){
 							$("#replyer").val("");

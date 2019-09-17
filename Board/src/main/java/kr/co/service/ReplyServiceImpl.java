@@ -1,5 +1,7 @@
 package kr.co.service;
 
+import java.util.List;
+
 import javax.inject.Inject;
 
 import org.springframework.stereotype.Service;
@@ -18,6 +20,24 @@ public class ReplyServiceImpl implements ReplyService{
 	@Override
 	public void insert(ReplyVO vo) {
 		dao.insert(vo);
+	}
+
+	@Override
+	public List<ReplyVO> list(int bno) {
+
+		return dao.list(bno);
+	}
+
+	@Override
+	public void update(ReplyVO vo) {
+
+		dao.update(vo);
+	}
+
+	@Override
+	public void delete(int rno) {
+
+		dao.delete(rno);
 	}
 
 }

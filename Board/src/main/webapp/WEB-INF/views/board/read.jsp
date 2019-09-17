@@ -70,6 +70,30 @@
 				</div>
 			</div>
 		</div>
+		
+		<div id="replies" class="row">
+			<hr>
+			
+		</div>
+		
+		<div class="row">
+			<div data-backdrop="static" id="myModal" class="modal fade">
+				<div class="modal-dialog">
+					<div class="modal-header">
+						<button data-dismiss="modal" class="close">&times;</button>
+						<p id="modal_rno"></p>
+					</div>
+					<div class="modal-body">
+						<input id="modal_replytext" class="form-control">
+					</div>
+					<div class="modal-footer">
+						<button id="modal_update" data-dismiss="modal" class="btn">수정</button>
+						<button id="modal_delete" data-dismiss="modal" class="btn">삭제</button>
+						<button id="modal_close" data-dismiss="modal" class="btn">닫기</button>
+					</div>
+				</div>
+			</div>
+		</div>
 	</div>
 
 	<script type="text/javascript">
@@ -77,6 +101,58 @@
 		var bno = ${vo.bno}; /* 계속 사용될것이므로 전역변수로 지정 */
 		
 		$(document).ready(function(){
+			
+			$("#modal_delete").click(function(){
+				var rno = $("#modal_rno").text();
+				
+				$.ajax({
+					type : 'delete',
+					url : '/replies/'+rno,
+					headers : {
+						'Content-Type' : 'application/json',
+						'X-HTTP-Method-Override' : 'delete'
+					},
+					dataType : 'text',
+					success : function(result){
+						alert(result);
+						getAllList(bno);
+					}
+				});
+			});
+			
+			$("#modal_update").click(function(){
+				var rno = $("#modal_rno").text();
+				var replytext = $("#modal_replytext").val();
+				
+				$.ajax({
+					type : 'put',
+					url : '/replies/'+rno,
+					headers : {
+						'Content-Type' : 'application/json',
+						'X-HTTP-Method-Override' : 'put'
+					},
+					data : JSON.stringify({
+						replytext : replytext
+					}),
+					dataType : 'text',
+					success : function(result){
+						alert(result);
+						getAllList(bno);
+					}
+				});
+			});
+			
+			/*동적으로 생성된 버튼에서 가장 가까운 정적 부모 아이디를 넣어줘야함(#replies), 동적에는 on 함수를 써야함*/
+			$("#replies").on("click", ".callModal", function(){
+				var rno = $(this).prev("p").attr("data-rno");
+				var replytext = $(this).prev("p").text();
+				
+				$("#modal_rno").text(rno);
+				$("#modal_replytext").val(replytext);
+				
+				$("#myModal").modal("show");
+			});
+			
 			
 			$("#reply_form").click(function(){
 				$("#myCollapsible").collapse("toggle");
@@ -110,6 +186,7 @@
 						if(result == 'INSERT_SUCCESS'){
 							$("#replyer").val("");
 							$("#replytext").val("");
+							getAllList(bno);
 						}
 					}
 				});
@@ -134,8 +211,38 @@
 				$form.attr("method","get");
 				$form.submit();
 			});
+			
+			getAllList(bno);
+			
 		});
 		
+		function getAllList(bno) {
+			$.getJSON("/replies/"+bno, function(arr){
+				/* console.log(result); 관리자모드 - console로 확인하기*/
+				var str = '<hr>';
+				
+				for(var i=0;i<arr.length;i++){ 
+					/*
+					div부분을 문자열로 인식해야하기 때문에 줄마다 ''로 감싸주고 +로 연결해야한다
+					데이터 부분은 배열값으로 되어있기 때문에 arr[i].rno 의 형태로 적용시켜줘야한다
+					data-rno를 이용해 rno값을 p에 고정
+					button class에 callModal이라는 클래스 추가 (나중에 Modal을 사용하기 위해)
+					*/
+					str += '<div class="panel panel-info">'+
+				'<div class="panel-heading">'+
+					'<span>rno:'+arr[i].rno+', 작성자: <span class="glyphicon glyphicon-user"></span>'+arr[i].replyer+'</span>'+
+					'<span class="pull-right"><span class="glyphicon glyphicon-time"></span>'+arr[i].updatedate+'</span>'+
+				'</div>'+
+				'<div class="panel-body">'+
+					'<p data-rno="'+arr[i].rno+'">'+arr[i].replytext+'</p>'+
+					'<button class="btn callModal"><span class="glyphicon glyphicon-edit"></span>수정/삭제<span class="glyphicon glyphicon-trash"></span></button>'+
+				'</div>'+
+				'</div>';
+				}
+				
+				$("#replies").html(str);
+			});
+		}
 		
 	</script>
 </body>
