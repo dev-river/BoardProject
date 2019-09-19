@@ -57,6 +57,8 @@ public class BoardServiceImpl implements BoardService{
 		int amount = bDao.getAmount();
 		to.setAmount(amount);
 		
+		System.out.println(":::::::pointcuts::::::::");
+		
 		List<BoardVO> list = bDao.list(to);
 		to.setList(list);
 		
