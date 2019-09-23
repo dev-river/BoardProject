@@ -29,7 +29,16 @@ public class UploadController {
 	@Resource(name = "uploadPath")
 	private String uploadPath;
 	
+	@RequestMapping(value="/deletefile", method = RequestMethod.POST)
+	@ResponseBody
+	public ResponseEntity<String> deletefile(String filename){
+		
+		return UploadFileUtils.deletefile(uploadPath, filename);
+	}
+	
+	
 	@RequestMapping(value="/uploadajax",method = RequestMethod.POST, produces = "application/text; charset=UTF-8")
+	@ResponseBody
 	public ResponseEntity<String> uploadAjax(MultipartHttpServletRequest request) throws Exception {
 		
 		MultipartFile file = request.getFile("file");

@@ -25,5 +25,6 @@ public interface BoardDAO {
 
 	public List<BoardVO> list(PageTO<BoardVO> to);
 
+	public void addAttch(String filename, int bno);
 	
 }

@@ -16,6 +16,7 @@ public class BoardVO implements Serializable{
 	private String regidate;
 	private String updatedate;
 	private int viewcnt;
+	private String[] files;
 
 	public BoardVO() {
 		//default 생성자
@@ -97,6 +98,14 @@ public class BoardVO implements Serializable{
 
 	public void setViewcnt(int viewcnt) {
 		this.viewcnt = viewcnt;
+	}
+	
+	public String[] getFiles() {
+		return files;
+	}
+
+	public void setFiles(String[] files) {
+		this.files = files;
 	}
 
 	public static long getSerialversionuid() {

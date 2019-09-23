@@ -20,7 +20,15 @@ public class BoardServiceImpl implements BoardService{
 	@Override
 	public Integer create(BoardVO vo) throws Exception {
 
-		return bDao.create(vo);
+		bDao.create(vo);
+		
+		if(vo.getFiles() != null) {
+			for(String filename : vo.getFiles()) {
+				bDao.addAttch(filename, vo.getBno());
+			}
+		}
+		
+		return vo.getBno();
 	}
 
 	@Override

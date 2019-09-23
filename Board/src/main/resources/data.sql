@@ -65,3 +65,14 @@ create sequence seq_reply;
 --select문
 select * from tbl_board
 select * from tbl_reply
+
+--파일업로드용 테이블 생성
+create table tbl_attach(
+id number(8) primary key,
+bno number references tbl_board(bno),
+filename varchar2(150) not null,
+regidate date default sysdate
+);
+
+--파일업로드용 시퀀스 생성
+create sequence seq_attach;
