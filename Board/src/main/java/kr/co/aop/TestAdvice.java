@@ -38,7 +38,7 @@ public class TestAdvice {
 		BoardVO vo = null;
 		if(obj instanceof BoardVO) {
 			vo = (BoardVO) obj;
-			vo.setBno(74);
+//			vo.setBno(74);
 			return vo;
 		}
 		

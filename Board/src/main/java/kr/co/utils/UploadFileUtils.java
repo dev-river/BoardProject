@@ -22,6 +22,40 @@ import org.springframework.util.FileCopyUtils;
 import org.springframework.web.multipart.MultipartFile;
 
 public class UploadFileUtils {
+	
+	public static ResponseEntity<String> deletefile(String uploadPath, String filename){
+		
+		ResponseEntity<String> entity = null;
+		
+		try {
+			
+			filename = filename.replace('/', File.separatorChar);
+			
+			String formatName = filename.substring(filename.lastIndexOf(".")+1);
+			boolean isImg = UploadFileUtils.checkFormat(formatName);
+			
+			if(isImg) {
+				String newfilename = filename.replace("s_", "");
+				File ori_img = new File(uploadPath+newfilename);
+				ori_img.delete();
+			}
+			
+			File generalAndThumb = new File(uploadPath+filename);
+			
+			generalAndThumb.delete();
+		} catch (Exception e) {
+			e.printStackTrace();
+			entity = new ResponseEntity<String>(HttpStatus.BAD_REQUEST);
+		} finally {
+			try {
+
+			} catch (Exception e2) {
+				e2.printStackTrace();
+			}
+		}
+		
+		return entity;
+	}
 
 	public static String makeIcon(String uploadPath, String datePath, String savedName) throws Exception {
 		
@@ -76,7 +110,7 @@ public class UploadFileUtils {
 		}
 	}
 	
-	private static boolean checkFormat(String formatName) {
+	public static boolean checkFormat(String formatName) {
 		List<String> list = new ArrayList<String>();
 		list.add("jpg");
 		list.add("jpeg");

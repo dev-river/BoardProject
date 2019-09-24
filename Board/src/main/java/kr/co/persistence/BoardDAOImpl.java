@@ -1,6 +1,8 @@
 package kr.co.persistence;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -70,5 +72,37 @@ public class BoardDAOImpl implements BoardDAO{
 		return session.selectList(NS+".list", to);
 	}
 
+	@Override
+	public void addAttch(String filename, int bno) {
 
+		Map<String, Object> map = new HashMap<String, Object>();
+		map.put("filename", filename);
+		map.put("bno", bno);
+		
+		session.insert(NS+".addAttch", map);
+	}
+
+	@Override
+	public List<String> getAttach(int bno) {
+
+		return session.selectList(NS+".getAttach", bno);
+	}
+
+	@Override
+	public void clearAttach(int bno) {
+
+		session.delete(NS+".clearAttach", bno);
+	}
+
+	@Override
+	public void deleteAttach(String filename, int bno) {
+
+		Map<String, Object> map = new HashMap<String, Object>();
+		map.put("filename", filename);
+		map.put("bno", bno);
+		
+		session.delete(NS+".deleteAttach", map);
+	}
+
+	
 }

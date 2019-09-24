@@ -2,7 +2,10 @@ package kr.co.board;
 
 import java.util.List;
 
+import javax.annotation.Resource;
+
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -14,6 +17,7 @@ import kr.co.domain.BoardVO;
 import kr.co.domain.PageTO;
 import kr.co.service.BoardService;
 import kr.co.service.ReplyService;
+import kr.co.utils.UploadFileUtils;
 
 @Controller
 @RequestMapping("/board")
@@ -24,6 +28,24 @@ public class BoardController {
 	
 	@Autowired
 	private ReplyService rService;
+	
+	@Resource(name = "uploadPath")
+	private String uploadPath;
+	
+	@ResponseBody
+	@RequestMapping(value = "/deletefile", method = RequestMethod.POST)
+	public ResponseEntity<String> deletefile(String filename, int bno){
+		bService.deleteAttach(filename, bno);
+		
+		return UploadFileUtils.deletefile(uploadPath, filename);
+	}
+	
+	@ResponseBody
+	@RequestMapping(value = "/getattach/{bno}")
+	public List<String> getAttach(@PathVariable("bno") int bno){
+		
+		return bService.getAttach(bno);
+	}
 	
 	@RequestMapping(value = "/create", method = RequestMethod.GET)
 	public void createUI() {
