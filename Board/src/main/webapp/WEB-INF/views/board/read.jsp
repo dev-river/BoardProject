@@ -11,6 +11,16 @@
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+
+<script src="/resources/js/uploadutils.js" type="text/javascript"></script>
+
+<style type="text/css">
+	.uploadedList{
+		list-style: none;
+		margin-bottom: 50px;
+	}
+</style>
+
 </head>
 <body>
 
@@ -43,6 +53,13 @@
 			<div class="form-group">
 				<label for="content">내용</label>
 				<textarea class="form-control" id="content" rows="3" readonly = "readonly">${vo.content}</textarea>
+			</div>
+			
+			<div class="form-group">
+				<label>첨부파일</label>
+				<ul class="uploadedList clearfix">
+					
+				</ul>
 			</div>
 			
 			<div class="form-group">
@@ -107,6 +124,8 @@
 		var replyPage = 1; /* 항상 첫페이지는 1 */
 		
 		$(document).ready(function(){
+		
+			getAllAttach(bno);
 			
 			$(".pagination").on("click", "li a", function(event){
 				event.preventDefault();
@@ -212,7 +231,23 @@
 				$form.submit();
 			});
 			
-			$(".del").click(function(){
+			$(".del").click(function(event){
+				event.preventDefault();
+				
+				$(".uploadedList li").each(function(){
+					var filename = $(this).attr("data-ca");
+					$.ajax({
+						type : 'post',
+						url : '/deletefile',
+						data : {
+							filename : filename
+						},
+						dataType : 'text'
+						
+					});
+				});
+				
+				
 				$form.attr("action","/board/del");
 				$form.attr("method","post");
 				$form.submit();
@@ -275,6 +310,34 @@
 			}
 			
 			$(".pagination").html(str);
+		}
+		
+		function getAllAttach(bno){
+			$.getJSON("/board/getattach/"+bno, function(arr){
+				var str = "";
+				for(var i=0; i<arr.length; i++){
+					if(checkImageType(arr[i])){
+						str += ""+
+						"<li data-ca='"+arr[i]+"' class='col-xs-3'>"+
+							"<span><img alt='첨부파일입니다' src='/displayfile?filename="+arr[i]+"'></span>"+
+							"<div>"+
+								"<a target='blank' href='/displayfile?filename="+getOriginalLink(arr[i])+"'>"+getOriginalName(arr[i])+"</a>"+
+							"</div>"+
+						"</li>";
+					}else{
+						str += ""+
+						"<li data-ca='"+arr[i]+"' class='col-xs-3'>"+
+							"<span><img alt='첨부파일입니다' src='/resources/test.png'></span>"+
+							"<div>"+
+								"<a href='/displayfile?filename="+getOriginalLink(arr[i])+"'>"+getOriginalName(arr[i])+"</a>"+
+							"</div>"+
+						"</li>";
+					}
+					
+				}
+					
+					$(".uploadedList").append(str);
+			});
 		}
 	</script>
 </body>

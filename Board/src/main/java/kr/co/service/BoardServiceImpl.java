@@ -46,6 +46,7 @@ public class BoardServiceImpl implements BoardService{
 	@Override
 	public void del(int bno) {
 
+		bDao.clearAttach(bno);
 		bDao.del(bno);
 	}
 
@@ -58,6 +59,15 @@ public class BoardServiceImpl implements BoardService{
 	@Override
 	public void modify(BoardVO vo) {
 		bDao.modify(vo);
+		
+		bDao.clearAttach(vo.getBno());
+		
+		if(vo.getFiles() !=null) {
+			
+			for(String filename : vo.getFiles()) {
+				bDao.addAttch(filename, vo.getBno());
+			}
+		}
 	}
 
 	@Override
@@ -77,6 +87,18 @@ public class BoardServiceImpl implements BoardService{
 	public int amount() {
 
 		return bDao.getAmount();
+	}
+
+	@Override
+	public List<String> getAttach(int bno) {
+
+		return bDao.getAttach(bno);
+	}
+
+	@Override
+	public void deleteAttach(String filename, int bno) {
+
+		bDao.deleteAttach(filename, bno);
 	}
 
 

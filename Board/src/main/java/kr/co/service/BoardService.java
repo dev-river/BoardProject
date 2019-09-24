@@ -23,4 +23,7 @@ public interface BoardService {
 
 	public int amount();
 	
+	public List<String> getAttach(int bno);
+
+	public void deleteAttach(String filename, int bno);
 }

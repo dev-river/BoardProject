@@ -63,7 +63,7 @@
 			</ul>
 			
 			<div class="form-group">
-				<input type="submit" class="btn btn-primary form-submit" value="등록">
+				<input type="submit" class="btn btn-primary" value="등록">
 				<input id="reset" type="reset" class="btn btn-warning" value="취소">
 				<!-- 취소하면 등록해뒀던 이미지 삭제하고 list.jsp로 이동하게 만들어보기 -->
 			</div>
@@ -73,6 +73,29 @@
 <script type="text/javascript">
 	
 	$("document").ready(function(){
+		
+		$("input[type='submit']").click(function(event){
+			event.preventDefault();
+			
+			var str="";
+			/* var arr = $(".delbtn");
+			for(var i=0;i<arr.length;i++){
+				alert(arr[i].getAttribute("data-ca"));
+			} */
+			
+			$(".delbtn").each(function(index){
+				str += "<input name='files["+index+"]' value='"+$(this).attr("data-ca")+"' type='hidden' />"
+			});
+			
+			$("form").append(str);
+			$("form").submit();
+			
+		});
+		
+		/* $("input[type='reset']").click(function(event){
+			event.preventDefault();
+			
+		}); */
 		
 		$(".uploadedList").on("click",".delbtn", function(event){
 			event.preventDefault();
